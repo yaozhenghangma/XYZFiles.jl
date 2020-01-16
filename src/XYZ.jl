@@ -2,27 +2,28 @@ module XYZ
 
 using AtomBase
 
-function read(io::IOStream, properties::Array{AbstractProperties, 1})
+function read(io::IOStream, properties::Array{T, 1}) where T<:AbstractProperties
     allAtoms = Array{Atoms, 1}(undef, 0)
     while (line = readline(io)) != ""
         atoms = Atoms()
-        number = parse(Int64, split(line, " ")[1])
+        number = parse(Int64, split(line)[1])
 
         line = readline(io)
-        words = split(line, " ")
+        words = split(line)
         for prop in properties
-            reProp = Regex(prop*"=.*")
-            matchProp(w) = match(reProp, w) === nothing
-            ind = findfirst(matchProp.(words))
-            val = parse(eltype(prop), split(words[ind], "=")[2])
-            prop(val)
-            addProperty!(atoms, prop)
+            reProp = Regex(prop.name*"=.*")
+            matchProp(w) = !(match(reProp, w) === nothing)
+            if (ind = findfirst(matchProp.(words))) !== nothing
+                val = parse(eltype(prop), split(words[ind], "=")[2])
+                prop(val)
+                addProperty!(atoms, prop)
+            end
         end
 
         for i in 1:number
             line = readline(io)
-            words = split(line, " ")
-            atom = Atom(words[1], [parse(Float64,words[2]), parse(Float64,words[3]), parse(Float64,words[4])])
+            words = split(line)
+            atom = Atom(String(words[1]), [parse(Float64,words[2]), parse(Float64,words[3]), parse(Float64,words[4])])
             addAtom!(atoms, atom)
         end
 
@@ -32,7 +33,7 @@ function read(io::IOStream, properties::Array{AbstractProperties, 1})
     return allAtoms
 end
 
-function read(file::String, properties::Array{AbstractProperties, 1})
+function read(file::String, properties::Array{T, 1}) where T<:AbstractProperties
     io = open(file, "r")
     structures = read(io, properties)
     close(io)
