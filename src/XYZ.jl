@@ -73,4 +73,35 @@ function read(file::String, propertiesString::Array{String, 1})
     return structures
 end
 
+function write(io::IOStream, allAtoms::Array{Atoms, 1})
+    for atoms in allAtoms
+        println(io, atoms.number)
+
+        for prop in atoms.properties
+            print(io, prop)
+        end
+        print("\n")
+
+        for atom in atoms.atom
+            println(io, atom.symbol, "\t", atom.position[1], "\t", atom.position[2], "\t", atom.position[3])
+        end
+    end
+    return nothing
+end
+
+function write(file::String, allAtoms::Array{Atoms, 1})
+    io = open(file, "w")
+    write(io, allAtoms)
+    close(io)
+    return nothing
+end
+
+function write(io::IOStream, atoms::Atoms)
+    write(io, [atoms, ])
+end
+
+function write(file::String, atoms::Atoms)
+    write(file, [atoms,])
+end
+
 end
