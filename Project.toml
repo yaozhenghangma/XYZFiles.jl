@@ -8,6 +8,7 @@ AtomBase = "ccf6c0ac-cd45-4eaf-bc3d-e8176fb87b3b"
 
 [compat]
 julia = "1.3"
+AtomBase = "0.1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
