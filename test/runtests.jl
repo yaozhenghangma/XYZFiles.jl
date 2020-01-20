@@ -14,12 +14,6 @@ using Test
 
     allAtoms3 = XYZ.read("test.xyz")
 
-    allAtoms4 = XYZ.read("test.xyz", "energy")
-
-    io = open("test.xyz", "r")
-    allAtoms5 = XYZ.read(io, "energy")
-    close(io)
-
     XYZ.write("test_output.xyz", allAtoms1)
     @test length(allAtoms) == 3
     @test length(allAtoms1[1]) == 8

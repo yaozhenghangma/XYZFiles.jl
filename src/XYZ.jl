@@ -16,7 +16,7 @@ function read(io::IOStream, properties::Array{T, 1}) where T<:AbstractProperties
             if (ind = findfirst(matchProp.(words))) !== nothing
                 val = parse(eltype(prop), split(words[ind], "=")[2])
                 prop(val)
-                addProperty!(atoms, prop)
+                addProperty!(atoms, deepcopy(prop))
             end
         end
 
@@ -80,7 +80,7 @@ function write(io::IOStream, allAtoms::Array{Atoms, 1})
         for prop in atoms.properties
             print(io, prop)
         end
-        print("\n")
+        print(io, "\n")
 
         for atom in atoms.atom
             println(io, atom.symbol, "\t", atom.position[1], "\t", atom.position[2], "\t", atom.position[3])
