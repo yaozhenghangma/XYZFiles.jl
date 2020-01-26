@@ -1,20 +1,20 @@
-using XYZFile
+using XYZFiles
 using Test
 
 @testset "read" begin
-    allAtoms = XYZFile.read("test.xyz", ["energy",])
+    allAtoms = XYZFiles.read("test.xyz", ["energy",])
 
     io = open("test.xyz", "r")
-    allAtoms1 = XYZFile.read(io, ["energy",])
+    allAtoms1 = XYZFiles.read(io, ["energy",])
     close(io)
 
     io = open("test.xyz", "r")
-    allAtoms2 = XYZFile.read(io)
+    allAtoms2 = XYZFiles.read(io)
     close(io)
 
-    allAtoms3 = XYZFile.read("test.xyz")
+    allAtoms3 = XYZFiles.read("test.xyz")
 
-    XYZFile.write("test_output.xyz", allAtoms1)
+    XYZFiles.write("test_output.xyz", allAtoms1)
     @test length(allAtoms) == 3
     @test length(allAtoms1[1]) == 8
     @test length(allAtoms2[2]) == 6

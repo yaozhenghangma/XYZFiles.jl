@@ -1,4 +1,4 @@
-module XYZFile
+module XYZFiles
 
 using AtomBase
 
